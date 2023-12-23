@@ -47,9 +47,8 @@ int main(){
     dsu dsu(n + 1);
     int sum = 0;
     for(int i = 0; i < m; i++){
-        if(dsu.get(adj[i][1]) != dsu.get(adj[i][2])){
+        if(dsu.unite(adj[i][1], adj[i][2])){
             sum += adj[i][0];
-            dsu.unite(adj[i][1], adj[i][2]);
         }
     }
 
