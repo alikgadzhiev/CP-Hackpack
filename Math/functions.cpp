@@ -1,20 +1,3 @@
-#define ll long long
-#define vs vector<string>
-#define vl vector<ll>
-#define vll vector<vl>
-#define all(x) x.begin(), x.end()
-#define rall(x) x.rbegin(), x.rend()
-#define pl pair<ll, ll>
-#define vpl vector<pl>
-#define ld long double
-#define pb   push_back
-#define pob pop_back
-#define eb   emplace_back
-#define mine(a)    (*min_element((a).begin(), (a).end()))
-#define maxe(a)    (*max_element((a).begin(), (a).end()))
-#define mini(a)    ( min_element((a).begin(), (a).end()) - (a).begin())
-#define maxi(a)    ( max_element((a).begin(), (a).end()) - (a).begin())
-
 vector<int> fact, rev_fact;
  
 int pow1(int x, int y, int z = C) {
@@ -129,16 +112,6 @@ void findEulerPath(){
     return;
 }
 
-ll numberOfUniqueSubstringsInBinaryString(string s) {
-    ll mod = 1000000007, zeros = 0, ones = 0;
-    for (auto ch : s)
-        if (ch == '1')
-            ones = (zeros + ones + 1) % mod;
-        else
-            zeros = (zeros + ones) % mod;
-    return (ones + zeros + (zeros || s[0] == '0')) % mod;
-}
-
 void binarySearch(){
     // left
     {
@@ -184,16 +157,6 @@ long long modPow(long long x, long long y) {
         x = (x * x) % mod;
     }
     return res;
-}
-
-ll gcd(ll a, ll b) {
-    while (a && b) {
-        if (a > b)
-            a %= b;
-        else
-            b %= a;
-    }
-    return a + b;
 }
 
 ll computeXOR(ll n) {
@@ -268,22 +231,6 @@ void sieve(int n) {
     }
 }
 
-long long mod = (ll) (1e9) + 7;
-
-long long fact(long long x) {
-    long long ans = 1;
-    for (long long i = 2; i <= x; i++) {
-        ans = (ans * i) % mod;
-    }
-    return ans;
-}
-
-long long numberOfWaysToChooseKFromN(long long k, long long n) {
-    if(n < k)
-        return 0;
-    return fact(n) / (fact(k) * fact(n - k));
-}
-
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
 
@@ -292,5 +239,3 @@ using namespace __gnu_pbds;
 template<typename num_t>
 using ordered_set = tree<num_t, null_type, less<num_t>, rb_tree_tag, tree_order_statistics_node_update>;
 
-int main() {
-}
