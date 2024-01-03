@@ -22,10 +22,10 @@ struct sparse_table{ // 0-indexation
 			}
 		}
 	}
-	T range_max(int L, int R){
-	    if(L == R)
-            return ST[0][L];
-        R++;
+	T query(int L, int R){
+		if(L == R)
+            		return ST[0][L];
+        	R++;
 		int d = 31 - __builtin_clz(R - L);
 		return max(ST[d][L], ST[d][R - (1 << d)]);
 	}
