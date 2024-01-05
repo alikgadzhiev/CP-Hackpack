@@ -7,6 +7,11 @@ public:
     vector<long long> tree;
     int n;
 
+    segtree(int size) {
+        n = (1 << (int)ceil(log2(a.size())));
+        tree.resize(n * 2);
+    }
+
     segtree(vector<int> a){
         n = (1 << (int)ceil(log2(a.size())));
         tree.resize(n * 2);
@@ -16,18 +21,20 @@ public:
             tree[i] = tree[2 * i] + tree[2 * i + 1];
     }
 
-    long long query(int l, int r, int node = 1, int node_l = 0, int node_r = -1){
-        if(node == 1)
-            node_r = n - 1;
-        if(l <= node_l && node_r <= r){
-            return tree[node];
+    long long query(int l, int r, int x, int lx, int rx){
+        if(l <= lx && rx <= r){
+            return tree[x];
         }
-        if(node_l > r || node_r < l){
+        if(lx > r || rx < l){
             return 0;
         }
-        int mid = (node_l + node_r) / 2;
-        return query(l, r, node * 2, node_l, mid) +
-               query(l, r, node * 2 + 1, mid + 1, node_r);
+        int mid = (lx + rx) / 2;
+        return query(l, r, x * 2, lx, mid) +
+               query(l, r, x * 2 + 1, mid + 1, rx);
+    }
+
+    long long query(int l, int r){
+        return query(l, r, 1, 0, n - 1);
     }
 
     void update(int i, int val){
