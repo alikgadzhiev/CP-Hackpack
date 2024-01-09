@@ -2,34 +2,25 @@
 
 using namespace std;
 
-struct BIT {
-    vector<int> bit;
-    int n;
-
-    BIT(int n){
-        this->n = n;
-        bit.assign(n + 1, 0);
+template <typename T>
+struct Fenwick {
+    const int n;
+    std::vector<T> a;
+    Fenwick(int n) : n(n), a(n) {}
+    void add(int x, T v) {
+        for (int i = x + 1; i <= n; i += i & -i) {
+            a[i - 1] += v;
+        }
     }
-
-    BIT(vector<int> a) : BIT((int)a.size()){
-        for(int i = 0; i < (int)a.size(); i++)
-            add(i + 1, a[i]);
+    T sum(int x) {
+        T ans = 0;
+        for (int i = x; i > 0; i -= i & -i) {
+            ans += a[i - 1];
+        }
+        return ans;
     }
-
-    int sum(int r){
-        int res = 0;
-        for(; r >= 1; r -= (r & (-r)))
-            res += bit[r];
-        return res;
-    }
-
-    int query(int l, int r){
-        return sum(r) - sum(l - 1);
-    }
-
-    void add(int idx, int value){
-        for(; idx <= n; idx += (idx & (-idx)))
-            bit[idx] += value;
+    T rangeSum(int l, int r) {
+        return sum(r) - sum(l);
     }
 };
 
