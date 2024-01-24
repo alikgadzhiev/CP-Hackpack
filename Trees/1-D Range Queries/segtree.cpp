@@ -7,8 +7,12 @@ public:
     vector<int> tree;
     int n;
 
+    int comb(int x, int y){
+        return max(x, y);
+    }
+
     segtree(int size) {
-        n = (1 << (int)ceil(log2(a.size())));
+        n = (1 << (int)ceil(log2(size)));
         tree.resize(n * 2);
     }
 
@@ -18,7 +22,7 @@ public:
         for(int i = 0; i < (int) a.size(); i++)
             tree[n + i] = a[i];
         for(int i = n - 1; i >= 1; i--)
-            tree[i] = tree[2 * i] + tree[2 * i + 1];
+            tree[i] = comb(tree[2 * i], tree[2 * i + 1]);
     }
 
     int query(int l, int r, int x, int lx, int rx){
@@ -29,18 +33,19 @@ public:
             return 0;
         }
         int mid = (lx + rx) / 2;
-        return query(l, r, x * 2, lx, mid) +
-               query(l, r, x * 2 + 1, mid + 1, rx);
+        return comb(query(l, r, x * 2, lx, mid),
+               query(l, r, x * 2 + 1, mid + 1, rx));
     }
 
     int query(int l, int r){
+        if(l > r) return 0;
         return query(l, r, 1, 0, n - 1);
     }
 
     void update(int i, int val){
         tree[n + i] = val;
         for(int j = (n + i) / 2; j >= 1; j /= 2)
-            tree[j] = tree[j * 2] + tree[j * 2 + 1];
+            tree[j] = comb(tree[j * 2], tree[j * 2 + 1]);
     }
 };
 
