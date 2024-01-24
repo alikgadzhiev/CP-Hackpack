@@ -4,7 +4,7 @@ using namespace std;
 
 struct segtree{
 public:
-    vector<long long> tree;
+    vector<int> tree;
     int n;
 
     segtree(int size) {
@@ -21,7 +21,7 @@ public:
             tree[i] = tree[2 * i] + tree[2 * i + 1];
     }
 
-    long long query(int l, int r, int x, int lx, int rx){
+    int query(int l, int r, int x, int lx, int rx){
         if(l <= lx && rx <= r){
             return tree[x];
         }
@@ -33,7 +33,7 @@ public:
                query(l, r, x * 2 + 1, mid + 1, rx);
     }
 
-    long long query(int l, int r){
+    int query(int l, int r){
         return query(l, r, 1, 0, n - 1);
     }
 
