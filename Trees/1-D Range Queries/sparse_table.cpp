@@ -9,6 +9,11 @@ using namespace std;
 template <typename T>
 struct sparse_table{ // 0-indexation
 	vector<vector<T>> ST;
+
+	T comb(T x, T y) {
+		return max(x, y);
+	}
+
 	sparse_table(vector<T> &A){
 		int N = A.size();
 		int LOG = 32 - __builtin_clz(N);
@@ -18,7 +23,7 @@ struct sparse_table{ // 0-indexation
 		}
 		for (int i = 0; i < LOG - 1; i++){
 			for (int j = 0; j < N - (1 << i); j++){
-				ST[i + 1][j] = max(ST[i][j], ST[i][j + (1 << i)]);
+				ST[i + 1][j] = comb(ST[i][j], ST[i][j + (1 << i)]);
 			}
 		}
 	}
@@ -27,7 +32,7 @@ struct sparse_table{ // 0-indexation
             		return ST[0][L];
         	R++;
 		int d = 31 - __builtin_clz(R - L);
-		return max(ST[d][L], ST[d][R - (1 << d)]);
+		return comb(ST[d][L], ST[d][R - (1 << d)]);
 	}
 };
 
