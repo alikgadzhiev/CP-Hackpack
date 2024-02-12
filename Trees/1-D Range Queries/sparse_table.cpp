@@ -7,7 +7,7 @@ using namespace std;
 // but only if the values of array do not change
 // for example, sum queries, etc.
 template <typename T>
-struct sparse_table{ // 0-indexation
+struct sparse_table{
 	vector<vector<T>> ST;
 
 	T comb(T x, T y) {
