@@ -1,32 +1,37 @@
 vector<int> fact, rev_fact;
- 
-int pow1(int x, int y, int z = C) {
-    if (y == 0) {
-        return 1;
+
+int modPow(int x, int y) {
+    int res = 1;
+    x = x % mod;
+    if (x == 0)
+        return 0;
+
+    while (y > 0) {
+        if (y & 1)
+            res = (res * x) % mod;
+        y = y >> 1;
+        x = (x * x) % mod;
     }
-    if (y % 2 == 0) {
-        return pow1(x*x % z, y/2, z);
-    }
-    return pow1(x, y-1, z)*x % z;
+    return res;
 }
- 
+
 void make_fact(int n) {
     fact = {1};
     for (int q = 1; q <= n; q++) {
-        fact.push_back(fact.back()*q % C);
+        fact.push_back(fact.back() * q % mod);
     }
-    rev_fact = {pow1(fact.back(), C-2, C)};
+    rev_fact = {modPow(fact.back(), mod - 2, mod)};
     for (int q = n; q > 0; q--) {
-        rev_fact.push_back(rev_fact.back()*q % C);
+        rev_fact.push_back(rev_fact.back() * q % mod);
     }
     reverse(rev_fact.begin(), rev_fact.end());
 }
  
-int C_n_k(int k, int n) {
+int C(int k, int n) {
     if (k < 0 || k > n) {
         return 0;
     }
-    return fact[n]*rev_fact[k] % C*rev_fact[n-k] % C;
+    return fact[n] * rev_fact[k] % mod * rev_fact[n - k] % mod;
 }
 
 void binarySearch(){
