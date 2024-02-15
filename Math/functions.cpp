@@ -20,7 +20,7 @@ void make_fact(int n) {
     for (int q = 1; q <= n; q++) {
         fact.push_back(fact.back() * q % mod);
     }
-    rev_fact = {modPow(fact.back(), mod - 2, mod)};
+    rev_fact = {modPow(fact.back(), mod - 2)};
     for (int q = n; q > 0; q--) {
         rev_fact.push_back(rev_fact.back() * q % mod);
     }
