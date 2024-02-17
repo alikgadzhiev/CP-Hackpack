@@ -2,12 +2,14 @@
 
 using namespace std;
 
+int inf = (int) 1e15 + 7;
+
 vector<int> assignment;
 
 template<typename T>
-int64_t hungarian(vector<vector<T>> costs) {
-    int n = int(costs.size());
-    int m = costs.empty() ? 0 : int(costs[0].size());
+int hungarian(vector<vector<T>> costs) {
+    int n = (int) costs.size();
+    int m = costs.empty() ? 0 : (int)costs[0].size();
 
     if (n > m) {
         vector<vector<T>> new_costs(m, vector<T>(n));
@@ -20,11 +22,11 @@ int64_t hungarian(vector<vector<T>> costs) {
         swap(n, m);
     }
 
-    vector<int64_t> u(n + 1), v(m + 1);
+    vector<int> u(n + 1), v(m + 1);
     vector<int> p(m + 1), way(m + 1);
 
     for (int i = 1; i <= n; i++) {
-        vector<int64_t> min_v(m + 1, INF64);
+        vector<int> min_v(m + 1, inf);
         vector<bool> used(m + 1, false);
         p[0] = i;
         int j0 = 0;
@@ -32,11 +34,11 @@ int64_t hungarian(vector<vector<T>> costs) {
         do {
             used[j0] = true;
             int i0 = p[j0], j1 = 0;
-            int64_t delta = INF64;
+            int delta = inf;
 
             for (int j = 1; j <= m; j++)
                 if (!used[j]) {
-                    int64_t cur = costs[i0 - 1][j - 1] - u[i0] - v[j];
+                    int cur = costs[i0 - 1][j - 1] - u[i0] - v[j];
 
                     if (cur < min_v[j]) {
                         min_v[j] = cur;
