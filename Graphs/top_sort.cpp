@@ -4,7 +4,7 @@ using namespace std;
 
 // Note: if there is a cycle, the size of the return will be less than n.
 vector<int> topological_sort(const vector<vector<int>> &adj) {
-    int n = int(adj.size());
+    int n = (int) adj.size();
     vector<int> in_degree(n, 0);
     vector<int> order;
 
@@ -18,7 +18,7 @@ vector<int> topological_sort(const vector<vector<int>> &adj) {
 
     int current = 0;
 
-    while (current < int(order.size())) {
+    while (current < (int) order.size()) {
         int node = order[current++];
 
         for (int neighbor : adj[node])
