@@ -5,6 +5,8 @@ using namespace std;
 
 // WARNING!!!!!!!!!!!!!
 // Only for undirected graphs
+// Time complexity - O(nm)
+// Space complexity - O(n)
 vector<int> Blossom(vector<vector<int>>& graph) {
   int n = graph.size(), timer = -1;
   vector<int> mate(n, -1), label(n), parent(n),
