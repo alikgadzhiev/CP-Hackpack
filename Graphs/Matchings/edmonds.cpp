@@ -2,6 +2,9 @@
 
 using namespace std;
 
+
+// WARNING!!!!!!!!!!!!!
+// Only for undirected graphs
 vector<int> Blossom(vector<vector<int>>& graph) {
   int n = graph.size(), timer = -1;
   vector<int> mate(n, -1), label(n), parent(n),
