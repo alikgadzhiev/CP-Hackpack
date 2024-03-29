@@ -1,84 +1,15 @@
-vector<int> fact, rev_fact;
-
-int modPow(int x, int y) {
-    int res = 1;
-    x = x % mod;
-    if (x == 0)
-        return 0;
-
-    while (y > 0) {
-        if (y & 1)
-            res = (res * x) % mod;
-        y = y >> 1;
-        x = (x * x) % mod;
-    }
-    return res;
-}
-
-void make_fact(int n) {
-    fact = {1};
-    for (int q = 1; q <= n; q++) {
-        fact.push_back(fact.back() * q % mod);
-    }
-    rev_fact = {modPow(fact.back(), mod - 2)};
-    for (int q = n; q > 0; q--) {
-        rev_fact.push_back(rev_fact.back() * q % mod);
-    }
-    reverse(rev_fact.begin(), rev_fact.end());
-}
+vector<Mint> fact(1, 1);
+vector<Mint> inv_fact(1, 1);
  
-int C(int k, int n) {
-    if (k < 0 || k > n) {
-        return 0;
-    }
-    return fact[n] * rev_fact[k] % mod * rev_fact[n - k] % mod;
-}
-
-void binarySearch(){
-    // left
-    {
-    	while(l < r){
-		int mid = (l + r) / 2;
-		....
-		....
-		....
-		if(....)
-			l = mid + 1;
-		else
-			r = mid;
-	}
-	return l;
-    }
-
-    // right
-    {
-    	while(l + 1 < r){
-	    int mid = (l + r) / 2;
-	    ....
-	    ....
-            ....
-            if(....)
-		r = mid;
-	    else
-		l = mid;
-	}
-	return r;
-    }
-}
-
-long long modPow(long long x, long long y) {
-    long long res = 1;
-    x = x % mod;
-    if (x == 0)
-        return 0;
-
-    while (y > 0) {
-        if (y & 1)
-            res = (res * x) % mod;
-        y = y >> 1;
-        x = (x * x) % mod;
-    }
-    return res;
+Mint C(int n, int k) {
+  if (k < 0 || k > n) {
+    return 0;
+  }
+  while ((int) fact.size() < n + 1) {
+    fact.push_back(fact.back() * (int) fact.size());
+    inv_fact.push_back(1 / fact.back());
+  }
+  return fact[n] * inv_fact[k] * inv_fact[n - k];
 }
 
 ll computeXOR(ll n) {
@@ -91,37 +22,6 @@ ll computeXOR(ll n) {
     if (n % 4 == 2)
         return n + 1;
     return 0;
-}
-
-string longDivision(string number, int divisor)
-{
-    // As result can be very large store it in string
-    string ans;
-
-    // Find prefix of number that is larger
-    // than divisor.
-    int idx = 0;
-    int temp = number[idx] - '0';
-    while (temp < divisor)
-        temp = temp * 10 + (number[++idx] - '0');
-
-    // Repeatedly divide divisor with temp. After
-    // every division, update temp to include one
-    // more digit.
-    while (number.size() > idx) {
-        // Store result in answer i.e. temp / divisor
-        ans += (temp / divisor) + '0';
-
-        // Take next digit of number
-        temp = (temp % divisor) * 10 + number[++idx] - '0';
-    }
-
-    // If divisor is greater than number
-    if (ans.length() == 0)
-        return "0";
-
-    // else return ans
-    return ans;
 }
 
 std::vector<int> minp, primes, phi;
