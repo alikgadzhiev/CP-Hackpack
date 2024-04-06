@@ -36,30 +36,34 @@ ostream &operator<<(ostream &os, vector<T> v) {
  
 long long mod = 998244353;
  
-vector<int> manacher_odd(string s) {
-    int n = (int) s.size();
-    s = "$" + s + "^";
-    vector<int> p(n + 2);
-    int l = 1, r = 1;
-    for(int i = 1; i <= n; i++) {
-        p[i] = max(0, min(r - i, p[l + (r - i)]));
-        while(s[i - p[i]] == s[i + p[i]]) {
-            p[i]++;
-        }
-        if(i + p[i] > r) {
-            l = i - p[i], r = i + p[i];
-        }
-    }
-    return vector<int>(begin(p) + 1, end(p) - 1);
-}
-
-vector<int> manacher(string s) {
-    string t;
-    for(auto c: s) {
-        t += string("#") + c;
-    }
-    auto res = manacher_odd(t + "#");
-    return vector<int>(begin(res) + 1, end(res) - 1);
+/**
+ * manacher(S): return the maximum palindromic substring of S centered at each point
+ *
+ * Input: string (or vector) of length N (no restrictions on character-set)
+ * Output: vector res of length 2*N+1
+ *   For any 0 <= i <= 2*N:
+ *   * i % 2 == res[i] % 2
+ *   * the half-open substring S[(i-res[i])/2, (i+res[i])/2) is a palindrome of length res[i]
+ *   * For odd palindromes, take odd i, and vice versa
+ */
+template <typename V> std::vector<int> manacher(const V& S) {
+	int N = (int)S.size();
+	std::vector<int> res(2*N+1, 0);
+	for (int i = 1, j = -1, r = 0; i < 2*N; i++, j--) {
+		if (i > r) {
+			r = i+1, res[i] = 1;
+		} else {
+			res[i] = res[j];
+		}
+		if (i+res[i] >= r) {
+			int b = r>>1, a = i-b;
+			while (a > 0 && b < N && S[a-1] == S[b]) {
+				a--, b++;
+			}
+			res[i] = b-a, j = i, r = b<<1;
+		}
+	}
+	return res;
 }
 
 int main() {
@@ -68,5 +72,8 @@ int main() {
     cout.tie(nullptr);
     string s;
     cin >> s;
-    manacher(s);
+    auto man = manacher(s);
+    auto is_pal = [&](int l, int r) -> bool {
+        return r - l <= man[l + r];
+    };
 }
