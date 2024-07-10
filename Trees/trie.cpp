@@ -78,3 +78,5 @@ struct binary_trie {
         return minimum;
     }
 };
+
+// link - https://codeforces.com/contest/1983/submission/269253141
