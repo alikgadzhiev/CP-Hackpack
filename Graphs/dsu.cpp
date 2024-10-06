@@ -1,7 +1,3 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-
 class dsu {
 public:
     vector<int> p;
@@ -30,7 +26,3 @@ public:
         return false;
     }
 };
-
-int main(){
-
-}
