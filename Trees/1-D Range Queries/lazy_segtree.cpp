@@ -150,4 +150,3 @@ struct Info {
 Info operator+(const Info &a, const Info &b) {
     return {std::max(a.max, b.max)};
 }
-//https://codeforces.com/contest/1916/submission/239651089 - link
