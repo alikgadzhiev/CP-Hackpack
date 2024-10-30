@@ -1,44 +1,31 @@
-#include <bits/stdc++.h>
+struct Kuhn { // O(n*m)
+    vector<vector<int>> adj;
+    vector<int> mt;
+    vector<bool> used;
 
-using namespace std;
-
-vector<vector<int>> adj;
-vector<int> mt;
-vector<bool> used;
-
-bool try_kuhn(int u){// O(n * m)
-    if(used[u])
-        return false;
-    used[u] = true;
-    for(int v : adj[u]){
-        if(mt[v] == -1 || try_kuhn(mt[v])){
-            mt[v] = u;
-            return true;
-        }
+    Kuhn(int n, int k) { // n, k - size of 1st and 2nd half respectively
+        adj.resize(n, {});
+        mt.resize(k, -1);
+        used.resize(n, false);
     }
-    return false;
-}
 
-int main(){
-    int n, k, m;
-    cin >> n >> k >> m;
-    adj.assign(n + k, vector<int>{});
-    mt.assign(n + k, -1);
-    used.assign(n, false);
-    for(int i = 0; i < m; i++){
-        int u, v;
-        cin >> u >> v;
-        u--, v--;
+    void add_edge(int u, int v) {
         adj[u].push_back(v);
-        adj[v].push_back(u);
     }
 
-    for(int u = 0; u < n; u++){
-        fill(used.begin(), used.end(), false);
-        try_kuhn(u);
+    bool work(int u) { // is there an augmenting path
+        fill(all(used), false);
+        auto dfs = [&](auto &self, int u) -> bool {
+            if(used[u]) return false;
+            used[u] = true;
+            for(int v : adj[u]) {
+                if(mt[v] == -1 || self(self, mt[v])) {
+                    mt[v] = u;
+                    return true;
+                }
+            }
+            return false;
+        };
+        return dfs(dfs, u);
     }
-
-    for(int u = n; u < n + k; u++)
-        if(mt[u] != -1)
-            cout << mt[u] + 1 << " " << u + 1 << '\n';
-}
+};
