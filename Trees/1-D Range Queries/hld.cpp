@@ -117,4 +117,3 @@ struct HLD {
         return lca(a, b) ^ lca(b, c) ^ lca(c, a);
     }
 };
-// https://codeforces.com/contest/1916/standings/friends/true/page/1 - link
