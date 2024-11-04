@@ -1,4 +1,3 @@
-using i64 = long long;
 template<class Info>
 struct SegmentTree {
     int n;
@@ -102,18 +101,10 @@ struct SegmentTree {
     }
 };
  
-constexpr i64 inf = 1E18;
 struct Info {
-    i64 sum = 0;
-    i64 ans = -inf;
-    i64 pre = -inf;
-    i64 suf = -inf;
+    int max = 0;
 };
+
 Info operator+(const Info &a, const Info &b) {
-    Info c;
-    c.sum = a.sum + b.sum;
-    c.ans = std::max({a.ans, b.ans, a.suf + b.pre});
-    c.pre = std::max(a.pre, a.sum + b.pre);
-    c.suf = std::max(a.suf + b.sum, b.suf);
-    return c;
+    return max({a.max, b.max});
 }
