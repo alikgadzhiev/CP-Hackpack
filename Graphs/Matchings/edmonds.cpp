@@ -1,8 +1,3 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-
-
 // WARNING!!!!!!!!!!!!!
 // Only for undirected graphs
 // Time complexity - O(nm)
@@ -63,27 +58,4 @@ vector<int> Blossom(vector<vector<int>>& graph) {
     if (mate[i] == -1)
       bfs(i);
   return mate;
-}
-
-int main(){
-    int n, m;
-    cin >> n >> m;
-
-    vector<vector<int>> adj(n);
-    for(int i = 0; i < m; i++){
-        int u, v;
-        cin >> u >> v;
-        u--, v--;
-        adj[u].push_back(v);
-        adj[v].push_back(u);
-    }
-
-    vector<int> mate = Blossom(adj);
-
-    for(int i = 0; i < n; i++){
-        if(mate[i] != -1){
-            mate[mate[i]] = -1;
-            cout << i + 1 << " " << mate[i] + 1 << '\n';
-        }
-    }
 }
