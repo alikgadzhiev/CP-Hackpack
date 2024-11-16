@@ -74,11 +74,3 @@ int hungarian(vector<vector<T>> costs) {
     assignment = p;
     return -v[0];
 }
-
-// https://codeforces.com/contest/1437/problem/C
-
-int main()
-{
-    cout << "Hello world!" << endl;
-    return 0;
-}
