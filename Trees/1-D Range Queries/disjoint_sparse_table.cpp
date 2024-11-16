@@ -31,5 +31,3 @@ class DisjointSparseTable {
     return func(mat[p][l], mat[p][r - 1]);
   }
 };
-
-// link - https://codeforces.com/contest/1988/submission/270682239
