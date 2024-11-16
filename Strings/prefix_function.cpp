@@ -1,7 +1,3 @@
-#include <iostream>
-
-using namespace std;
-
 vector<int> prefix_function(string s){
     int n = (int) s.size();
     vector<int> p(n + 1, 0);
@@ -20,8 +16,4 @@ vector<int> prefix_function(string s){
         }
     }
     return p;
-}
-
-int main(){
-
 }
