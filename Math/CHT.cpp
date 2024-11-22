@@ -1,37 +1,33 @@
 struct Line {
-    ll k, b;
-    mutable const Line *nx;
-    bool operator<(ll x) const {
-        if (!nx) return 0;
-        return b - nx->b < (nx->k - k) * x;
-    }
-    bool operator<(const Line& rhs) const {
-        return k < rhs.k;
-    }
+	mutable long long k, m, p;
+	bool operator<(const Line& o) const { return k < o.k; }
+	bool operator<(long long x) const { return p < x; }
 };
-// will maintain upper hull for maximum
-struct HullDynamic : multiset<Line, less<>> {
-    bool bad(iterator y) {
-        auto z = next(y);
-        if (y == begin()) {
-            if (z == end()) return 0;
-            return y->k == z->k && y->b <= z->b;
-        }
-        auto x = prev(y);
-        if (z == end()) return y->k == x->k && y->b <= x->b;
-        return (x->b - y->b)*(z->k - y->k) >= (y->b - z->b)*(y->k - x->k);
+
+struct CHT : multiset<Line, less<>> {
+	static const long long inf = LLONG_MAX;
+
+	long long div(long long a, long long b) {
+		return a / b - ((a ^ b) < 0 && a % b);
     }
-    void insert_line(ll k, ll b) {
-        auto y = insert({k, b, 0});
-        if (bad(y)) { erase(y); return; }
-        auto z = next(y);
-        while (z != end() && bad(z)) z = erase(z);
-        if (z != end()) y->nx = &*z;
-        while (y != begin() && bad(z = prev(y))) erase(z);
-        if (y != begin()) z->nx = &*y;
-    }
-    ll eval(ll x) {
-        auto l = *lower_bound(x);
-        return l.k * x + l.b;
-    }
+
+	bool isect(iterator x, iterator y) {
+		if (y == end()) return x->p = inf, 0;
+		if (x->k == y->k) x->p = x->m > y->m ? inf : -inf;
+		else x->p = div(y->m - x->m, x->k - y->k);
+		return x->p >= y->p;
+	}
+
+	void add(long long k, long long m) {
+		auto z = insert({k, m, 0}), y = z++, x = y;
+		while (isect(y, z)) z = erase(z);
+		if (x != begin() && isect(--x, y)) isect(x, y = erase(y));
+		while ((y = x) != begin() && (--x)->p >= y->p)
+			isect(x, erase(y));
+	}
+
+	long long query(long long x) {
+		auto l = *lower_bound(x);
+		return l.k * x + l.m;
+	}
 };
