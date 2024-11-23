@@ -19,7 +19,7 @@ struct Fenwick {
         }
         return ans;
     }
-    T rangeSum(int l, int r) {
+    T rangeSum(int l, int r) { // [l, r)
         return sum(r) - sum(l);
     }
 };
