@@ -1,7 +1,3 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-
 struct lca_lift {
   const int lg = 24;
   int n;
@@ -89,6 +85,3 @@ struct lca_lift {
 	  return depth[a] + depth[b] - 2 * depth[v];
   }
 };
-
-int main(){
-}
