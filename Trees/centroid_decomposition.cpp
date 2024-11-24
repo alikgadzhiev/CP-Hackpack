@@ -4,8 +4,6 @@ struct centroid_decomp {
     vector<int> sz;
     vector<int> par;
     vector<bool> vis;
-    vector<int> dist;
-    vector<int> best;
 
     centroid_decomp(int n) {
         this->n = n;
@@ -13,8 +11,6 @@ struct centroid_decomp {
         sz.resize(n);
         par.resize(n);
         vis.resize(n, false);
-        dist.resize(n);
-        best.resize(n);
     }
 
     void add_edge(int u, int v) {
