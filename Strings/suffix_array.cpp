@@ -1,7 +1,3 @@
-using i64 = long long;
-using u64 = unsigned long long;
-using u32 = unsigned;
-using u128 = unsigned __int128;
 constexpr int N = 5E6;
 namespace SA {
     using namespace std;
@@ -17,6 +13,11 @@ int sa[N], rk[N], ht[N], s[N<<1], t[N<<1], p[N], cnt[N], cur[N];
     for (int i = 0; i < n; i++) if (sa[i] > 0 &&  t[sa[i]-1]) pushL(sa[i]-1); \
     for (int i = 0; i < m; i++) cur[i] = cnt[i]-1;                            \
     for (int i = n-1;  ~i; i--) if (sa[i] > 0 && !t[sa[i]-1]) pushS(sa[i]-1)
+
+// rk[i] - the position of i-th suffix in a sorted array of suffixes
+// sa[i] - the index of suffix that is i-th in a lexicographical order
+// idk what is the other bullshit 
+
 void sais(int n, int m, int *s, int *t, int *p) {
     int n1 = t[n-1] = 0, ch = rk[0] = -1, *s1 = s+n;
     for (int i = n-2; ~i; i--) t[i] = s[i] == s[i+1] ? t[i+1] : s[i] > s[i+1];
