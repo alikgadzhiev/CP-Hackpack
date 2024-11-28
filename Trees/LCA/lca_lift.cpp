@@ -1,3 +1,8 @@
+struct edge {
+    int v = -1, w = 0;
+    edge(int v, int w): v(v), w(w) {}
+};
+
 struct lca_lift {
   const int lg = 24;
   int n;
