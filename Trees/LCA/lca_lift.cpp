@@ -2,86 +2,95 @@ struct lca_lift {
   const int lg = 24;
   int n;
   vector<int> depth;
-  vector<vector<int> > edges;
+  vector<int> depthw;
+  vector<vector<edge> > edges;
   vector<vector<int> > lift;
-  
-  void init(int sz) {
+
+  lca_lift(int sz) {
     n = sz;
     depth = vector<int>(n);
-    edges = vector<vector<int> >(n, vector<int>());
+    depthw = vector<int>(n);
+    edges = vector<vector<edge> >(n, vector<edge>());
     lift = vector<vector<int> >(n, vector<int>(lg, -1));
   }
- 
-  void edge(int a, int b) {
-    edges[a].push_back(b);
-    edges[b].push_back(a);
+
+  void add_edge(int a, int b, int w = 0) {
+    edges[a].push_back(edge(b, w));
+    edges[b].push_back(edge(a, w));
   }
- 
-  void attach(int node_to_attach, int node_to_attach_to) {
+
+  void attach(int node_to_attach, int node_to_attach_to, int weight = 0) {
     int a = node_to_attach, b = node_to_attach_to;
-    edge(a, b);
- 
+    add_edge(a, b, weight);
+
     lift[a][0] = b;
- 
+
     for (int i = 1; i < lg; i++) {
       if (lift[a][i - 1] == -1) lift[a][i] = -1;
       else lift[a][i] = lift[lift[a][i - 1]][i - 1];
     }
- 
+
     depth[a] = depth[b] + 1;
+    depthw[a] = depthw[b] + weight;
   }
- 
-  void init_lift(int v = 0) {
-    depth[v] = 0;
-    dfs(v, -1);
+
+  void init_lift(int u = 0) {
+    depth[u] = depthw[u] = 0;
+    dfs(u);
   }
- 
-  void dfs(int v, int par) {
-    lift[v][0] = par;
- 
+
+  void dfs(int u, int par = -1) {
+    lift[u][0] = par;
+
     for (int i = 1; i < lg; i++) {
-      if (lift[v][i - 1] == -1) lift[v][i] = -1;
-      else lift[v][i] = lift[lift[v][i - 1]][i - 1];
+      if (lift[u][i - 1] == -1) lift[u][i] = -1;
+      else lift[u][i] = lift[lift[u][i - 1]][i - 1];
     }
- 
-    for (int x: edges[v]) {
-      if (x != par) {
-        depth[x] = depth[v] + 1;
-        dfs(x, v);
+
+    for (edge x : edges[u]) {
+      if (x.v != par) {
+        depth[x.v] = depth[u] + 1;
+        depthw[x.v] = depthw[u] + x.w;
+        dfs(x.v, u);
       }
     }
   }
- 
-  int get(int v, int k) {
+
+  int get(int u, int k) {
     for (int i = lg - 1; i >= 0; i--) {
-	  if (v == -1) return v;
+	  if (u == -1) return u;
       if ((1 << i) <= k) {
-        v = lift[v][i];
+        u = lift[u][i];
         k -= (1 << i);
       }
     }
-    return v;
+    return u;
   }
- 
+
   int get_lca(int a, int b) {
     if (depth[a] < depth[b]) swap(a, b);
     int d = depth[a] - depth[b];
-    int v = get(a, d);
-    if (v == b) {
-      return v;
+    int u = get(a, d);
+    if (u == b) {
+      return u;
     } else {
       for (int i = lg - 1; i >= 0; i--) {
-        if (lift[v][i] != lift[b][i]) {
-          v = lift[v][i];
+        if (lift[u][i] != lift[b][i]) {
+          u = lift[u][i];
           b = lift[b][i];
         }
       }
       return lift[b][0];
     }
   }
-  
+
   int get_dist(int a, int b) {
-	  int v = get_lca(a, b);
-	  return depth[a] + depth[b] - 2 * depth[v];
+    int v = get_lca(a, b);
+    return depth[a] + depth[b] - 2 * depth[v];
+  }
+
+  int get_distw(int a, int b) {
+    int v = get_lca(a, b);
+    return depthw[a] + depthw[b] - 2 * depthw[v];
   }
 };
