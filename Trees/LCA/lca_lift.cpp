@@ -39,7 +39,7 @@ struct lca_lift {
     depthw[a] = depthw[b] + weight;
   }
 
-  void init_lift(int u = 0) {
+  void work(int u = 0) {
     depth[u] = depthw[u] = 0;
     dfs(u);
   }
