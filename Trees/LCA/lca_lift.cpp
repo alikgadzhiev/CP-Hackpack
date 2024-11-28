@@ -52,11 +52,11 @@ struct lca_lift {
       else lift[u][i] = lift[lift[u][i - 1]][i - 1];
     }
 
-    for (edge x : edges[u]) {
-      if (x.v != par) {
-        depth[x.v] = depth[u] + 1;
-        depthw[x.v] = depthw[u] + x.w;
-        dfs(x.v, u);
+    for (edge e : edges[u]) {
+      if (e.v != par) {
+        depth[e.v] = depth[u] + 1;
+        depthw[e.v] = depthw[u] + e.w;
+        dfs(e.v, u);
       }
     }
   }
