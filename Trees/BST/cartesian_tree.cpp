@@ -62,7 +62,7 @@ Node* erase(Node* t, int key) {
 
 // FOR DEBUGGING
 std::ostream &operator<< (std::ostream &out, Node &a) { 
- return out << "(" << a.x << ' ' << a.dec << ' ' << a.res << ' ' << a.add << ")"; 
+ return out << "(" << a.key << ' ' << a.size << ")"; 
 } 
 using TreeNode = Node; 
  
