@@ -1,98 +1,104 @@
-#include "bits/stdc++.h"
-
-using namespace std;
-
-template<typename T>
-istream &operator>>(istream &is, vector<T> &v) {
-    for (auto &i: v) is >> i;
-    return is;
-}
-
-template<typename T>
-ostream &operator<<(ostream &os, vector<T> v) {
-    for (auto &i: v) os << i << ' ';
-    return os;
-}
-
-long long mod = 998244353;
-
-struct CartesianTree{
-    int key, prior;
-    CartesianTree *left, *right;
-    CartesianTree() {}
-    CartesianTree(int key, int prior) : key(key), prior(prior), left(NULL), right(NULL) {}
+struct Node {
+    int key, priority, size;
+    Node* left;
+    Node* right;
+    Node(int key) : key(key), priority(rand()), size(1), left(nullptr), right(nullptr) {}
 };
 
-CartesianTree *new_node(int key, int prior){
-    CartesianTree *cur = new CartesianTree(key, prior);
-    return cur;
+int getSize(Node* t) {
+    return t ? t->size : 0;
 }
 
-CartesianTree* find(int key, CartesianTree *root){
-    if(root == NULL)
-        return NULL;
-
-    if(root->key == key)
-        return root;
-    else if(root->key < key)
-        return find(key, root->right);
-    else if(root->key > key)
-        return find(key, root->left);
-}
-
-CartesianTree* merge(CartesianTree *a, CartesianTree *b){
-    if(a == NULL) return b;
-    if(b == NULL) return a;
-
-    if(a->prior > b->prior){
-        merge(a->left, b);
-        return a;
-    } else {
-        merge(a, b->left);
-        return b;
+void update(Node* t) {
+    if (t) {
+        int lsize = getSize(t->left), rsize = getSize(t->right);
+        t->size = lsize + 1 + rsize;
     }
 }
 
-pair<CartesianTree*, CartesianTree*> split(int key, CartesianTree *root){
-    if(root == NULL) return {NULL, NULL};
-
-    if(root->key < key){
-        auto [l, r] = split(key, root->right);
-        root->right = l;
-        return {root, r};
+void split(Node* t, int key, Node*& l, Node*& r) { // (-inf, key) and [key, +inf)
+    if (!t) {
+        l = r = nullptr;
+        return;
+    }
+    if (key <= t->key) {
+        split(t->left, key, l, t->left);
+        r = t;
     } else {
-        auto [l, r] = split(key, root->left);
-        root->left = l;
-        return {l, root};
+        split(t->right, key, t->right, r);
+        l = t;
+    }
+    update(t);
+}
+
+Node* merge(Node* l, Node* r) {
+    if (!l || !r) return l ? l : r;
+    if (l->priority > r->priority) {
+        l->right = merge(l->right, r);
+        update(l);
+        return l;
+    } else {
+        r->left = merge(l, r->left);
+        update(r);
+        return r;
     }
 }
 
-CartesianTree* remove(int key, CartesianTree *root){
-    if(root == NULL) return NULL;
-
-    if(root->key == key){
-        root = merge(root->left, root->right);
-    } else {
-        if(key < root->key)
-            root->left = remove(key, root->left);
-        else
-            root->right = remove(key, root->right);
-    }
-    return root;
+Node* insert(Node* t, int key) {
+    Node* l, *r;
+    split(t, key, l, r);
+    return merge(merge(l, new Node(key)), r);
 }
 
-CartesianTree* insert(int key, int prior, CartesianTree *root){
-    if(root == NULL) return new CartesianTree(key, prior);
+Node* erase(Node* t, int key) {
+    Node *t1, *t2, *t3, *t4;
+    split(t, key, t1, t4);
 
-    auto [l, r] = split(key, root);
-    CartesianTree *node = new_node(key, prior);
-    CartesianTree *ans = merge(l, node);
-    ans = merge(ans, r);
-    return ans;
+    split(t4, key + 1, t2, t3);
+
+    free(t2);
+    return merge(t1, t3);
 }
 
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-}
+// FOR DEBUGGING
+std::ostream &operator<< (std::ostream &out, Node &a) { 
+ return out << "(" << a.x << ' ' << a.dec << ' ' << a.res << ' ' << a.add << ")"; 
+} 
+using TreeNode = Node; 
+ 
+void print_nodes(const string &padding, const string &edge, TreeNode *node, bool has_left_sibling) 
+{ 
+    if (node != NULL) { // recursion stopping condition 
+        cout << endl << padding << edge << *node; // printing the current node along with the needed padding and connecting edge 
+ 
+        // If the current node is a leaf, we wish to add some distance from it to another node that is in an upper 
+        // level in the tree, and is possibly yet to be printed.. 
+        if ((node->left == NULL) && (node->right == NULL)) { 
+            cout << endl << padding; // adding a new line along with the padding 
+            if (has_left_sibling) { // also, if the leaf has a left sibling, we wish to extend the edge between them 
+                cout << "|"; 
+            } 
+        } else {  
+            // if the current node is not a leaf, we add some spacing to the current padding, based on whether 
+            // the current node has a left sibling or not 
+            string new_padding = padding + (has_left_sibling ? "|    " : "     "); 
+            print_nodes(new_padding, "|----", node->right, node->left != NULL); // recurring with the right child and the new padding 
+            print_nodes(new_padding, "|____", node->left, false); // recurring with the left child and the new padding 
+        } 
+    } 
+} /* print_nodes */ 
+ 
+// main function to HORIZONTALLY print a binary tree 
+void print_tree(TreeNode *root) 
+{ 
+    // checking validity of root pointer 
+    if (root == NULL) { 
+        return; 
+    } 
+ 
+    // printing the key of the root, and moving on to print the rest of the nodes, using the utility function (initial padding is an empty string) 
+    cout << *root; 
+    print_nodes("", "|----", root->right, root->left != NULL); // printing the nodes on the right (similar to the recursive call inside print_nodes) 
+    print_nodes("", "|____", root->left, false); // printing the nodes on the left (note that the left child cannot have a left sibling) 
+ cout << rendl; 
+} /* print_tree */
