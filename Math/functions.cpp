@@ -38,16 +38,3 @@ void sieve(int n) {
         }
     }
 }
-
-void binary_search() { // to find the right bound
- int low = l, high = r; // both inclusive
- while(low < high) {
-  int mid = (low + high + 1) / 2;
-  if(check(mid) == bad)
-    high = mid - 1;
-  else
-    low = mid;
- }
- return high;
-}
-
