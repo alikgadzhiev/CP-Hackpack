@@ -1,7 +1,3 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-
 template <typename T>
 struct Fenwick {
     const int n;
@@ -23,6 +19,3 @@ struct Fenwick {
         return sum(r) - sum(l);
     }
 };
-
-int main(){
-}
