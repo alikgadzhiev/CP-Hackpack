@@ -16,7 +16,6 @@ int sa[N], rk[N], ht[N], s[N<<1], t[N<<1], p[N], cnt[N], cur[N];
 
 // rk[i] - the position of i-th suffix in a sorted array of suffixes
 // sa[i] - the index of suffix that is i-th in a lexicographical order
-// idk what is the other bullshit 
 
 void sais(int n, int m, int *s, int *t, int *p) {
     int n1 = t[n-1] = 0, ch = rk[0] = -1, *s1 = s+n;
