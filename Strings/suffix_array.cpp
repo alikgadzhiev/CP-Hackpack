@@ -58,7 +58,7 @@ namespace SA {
     void build_lcp(int n, const T *str) {
         int k = 0;
         // lcp[i] - lcp(sa[i], sa[i + 1])
-        // lcp(i, j) - min_query_lcp [rk[i], rk[j] + 1)
+        // lcp(i, j) - min_query_lcp [rk[i], rk[j] - 1)
         for (int i = 0; i < n; i++) {
             if (rk[i] == n) {
                 k = 0;
