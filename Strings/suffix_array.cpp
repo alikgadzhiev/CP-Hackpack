@@ -1,4 +1,4 @@
-constexpr int N = 5E6;
+constexpr int N = 1E6;
 namespace SA {
     using namespace std;
     int sa[N], rk[N], ht[N], s[N<<1], t[N<<1], p[N], cnt[N], cur[N], lcp[N];
@@ -41,6 +41,26 @@ namespace SA {
         for (int i = 0; i < n; i++) s[i] = rk[str[i]] - 1;
         return rk[m];
     }
+
+    template<typename T>
+    void build_lcp(int n, const T *str) {
+        int k = 0;
+        // lcp[i] - lcp(sa[i], sa[i + 1])
+        // lcp(i, j) - min_query_lcp [rk[i], rk[j] + 1)
+        for (int i = 0; i < n; i++) {
+            if (rk[i] == n - 1) {
+                k = 0;
+                continue;
+            }
+            int j = sa[rk[i] + 1];
+            while (i + k < n && j + k < n && str[i+k] == str[j+k])
+                k++;
+            lcp[rk[i]] = k;
+            if (k)
+                k--;
+        }
+    }
+
 // Ensure that str[n] is the unique lexicographically smallest character in str.
     template<typename T>
     void suffixArray(int n, const T *str) {
@@ -52,24 +72,7 @@ namespace SA {
             while (i+h < n && j+h < n && s[i+h] == s[j+h]) h++;
             if (ht[rk[i]] = h) h--;
         }
-    }
 
-    template<typename T>
-    void build_lcp(int n, const T *str) {
-        int k = 0;
-        // lcp[i] - lcp(sa[i], sa[i + 1])
-        // lcp(i, j) - min_query_lcp [rk[i], rk[j] - 1)
-        for (int i = 0; i < n; i++) {
-            if (rk[i] == n) {
-                k = 0;
-                continue;
-            }
-            int j = sa[rk[i] + 1];
-            while (i + k < n && j + k < n && s[i+k] == s[j+k])
-                k++;
-            lcp[rk[i]] = k;
-            if (k)
-                k--;
-        }
+        build_lcp(n, str);
     }
 };
