@@ -6,6 +6,8 @@ vector<int> lcp_construction(string const& s, vector<int> const& p) {
 
     int k = 0;
     vector<int> lcp(n-1, 0);
+    // lcp[i] - lcp(sa[i], sa[i + 1])
+    // lcp(i, j) - min_query_lcp [rk[i], rk[j] + 1)
     for (int i = 0; i < n; i++) {
         if (rank[i] == n - 1) {
             k = 0;
@@ -20,4 +22,3 @@ vector<int> lcp_construction(string const& s, vector<int> const& p) {
     }
     return lcp;
 }
-// for a query (i, j) for which we should output the LCP for i-th and j-th suffix, just ask range minimum query on lcp in range (i, i+1, ..., j) using SparseTable
