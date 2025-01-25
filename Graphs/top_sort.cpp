@@ -1,7 +1,3 @@
-#include <iostream>
-
-using namespace std;
-
 // Note: if there is a cycle, the size of the return will be less than n.
 vector<int> topological_sort(const vector<vector<int>> &adj) {
     int n = (int) adj.size();
@@ -27,7 +23,4 @@ vector<int> topological_sort(const vector<vector<int>> &adj) {
     }
 
     return order;
-}
-
-int main(){
 }
