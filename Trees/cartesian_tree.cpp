@@ -100,5 +100,5 @@ void print_tree(TreeNode *root)
     cout << *root; 
     print_nodes("", "|----", root->right, root->left != NULL); // printing the nodes on the right (similar to the recursive call inside print_nodes) 
     print_nodes("", "|____", root->left, false); // printing the nodes on the left (note that the left child cannot have a left sibling) 
- cout << rendl; 
+ cout << '\n'; 
 } /* print_tree */
