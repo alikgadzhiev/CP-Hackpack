@@ -68,5 +68,5 @@ struct Info {
 };
 
 Info operator+(const Info &a, const Info &b) {
-    return max({a.max, b.max});
+    return {max(a.max, b.max)};
 }
