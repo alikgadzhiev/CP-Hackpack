@@ -1,8 +1,3 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-
-
 // can use to find maximum, minimum or gcd on queries
 // but only if the values of array do not change
 // for example, sum queries, etc.
@@ -35,6 +30,3 @@ class SparseTable {
 };
 
 // link - https://codeforces.com/contest/1548/submission/229928645
-
-int main(){
-}
