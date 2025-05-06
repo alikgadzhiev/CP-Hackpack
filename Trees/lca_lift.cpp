@@ -6,8 +6,10 @@ struct edge {
 struct lca_lift {
   const int lg = 24;
   int n;
+  int time;
   vector<int> depth;
   vector<int> depthw;
+  vector<int> tin, tout;
   vector<vector<edge> > edges;
   vector<vector<int> > lift;
 
@@ -15,6 +17,8 @@ struct lca_lift {
     n = sz;
     depth = vector<int>(n);
     depthw = vector<int>(n);
+    tin = vector<int>(n);
+    tout = vector<int>(n);
     edges = vector<vector<edge> >(n, vector<edge>());
     lift = vector<vector<int> >(n, vector<int>(lg, -1));
   }
@@ -41,6 +45,7 @@ struct lca_lift {
 
   void work(int u = 0) {
     depth[u] = depthw[u] = 0;
+    time = 0;
     dfs(u);
   }
 
@@ -52,6 +57,7 @@ struct lca_lift {
       else lift[u][i] = lift[lift[u][i - 1]][i - 1];
     }
 
+    tin[u] = time++;
     for (edge e : edges[u]) {
       if (e.v != par) {
         depth[e.v] = depth[u] + 1;
@@ -59,6 +65,7 @@ struct lca_lift {
         dfs(e.v, u);
       }
     }
+    tout[u] = time++;
   }
 
   int get(int u, int k) {
@@ -91,11 +98,15 @@ struct lca_lift {
 
   int get_dist(int a, int b) {
     int v = get_lca(a, b);
-    return depth[a] + depth[b] - 2 * depth[v];
+    return depth[a] + depth[b] - 2 * depth[v] + 1;
   }
 
   int get_distw(int a, int b) {
     int v = get_lca(a, b);
     return depthw[a] + depthw[b] - 2 * depthw[v];
+  }
+
+  bool is_ancestor(int u, int v) { // u is an ancestor of v
+    return tin[v] >= tin[u] && tout[v] <= tout[u];
   }
 };
