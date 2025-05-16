@@ -1,4 +1,5 @@
-vector<int> prefix_function(string s){
+template<typename T>
+vector<int> prefix_function(T s){
     int n = (int) s.size();
     vector<int> p(n + 1, 0);
     for(int i = 0; i < n; i++){
