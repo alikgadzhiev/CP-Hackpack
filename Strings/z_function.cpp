@@ -1,4 +1,5 @@
-vector<int> z_function(string s) {
+template<typename T>
+vector<int> z_function(T s) {
     int n = s.size();
     vector<int> z(n);
     int l = 0, r = 0;
