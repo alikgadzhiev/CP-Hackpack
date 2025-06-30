@@ -4,14 +4,11 @@ struct SegmentTree {
     std::vector<Info> info;
     SegmentTree() : n(0) {}
     SegmentTree(int n_, Info v_ = Info()) {
-        init(n_, v_);
+        init(std::vector(n_, v_));
     }
     template<class T>
     SegmentTree(std::vector<T> init_) {
         init(init_);
-    }
-    void init(int n_, Info v_ = Info()) {
-        init(std::vector(n_, v_));
     }
     template<class T>
     void init(std::vector<T> init_) {
