@@ -10,7 +10,7 @@ struct lca_lift {
   vector<int> depth;
   vector<int> depthw;
   vector<int> tin, tout;
-  vector<vector<edge> > edges;
+  vector<vector<edge> > adj;
   vector<vector<int> > lift;
 
   lca_lift(int sz) {
@@ -19,13 +19,13 @@ struct lca_lift {
     depthw = vector<int>(n);
     tin = vector<int>(n);
     tout = vector<int>(n);
-    edges = vector<vector<edge> >(n, vector<edge>());
+    adj = vector<vector<edge> >(n, vector<edge>());
     lift = vector<vector<int> >(n, vector<int>(lg, -1));
   }
 
   void add_edge(int a, int b, int w = 0) {
-    edges[a].push_back(edge(b, w));
-    edges[b].push_back(edge(a, w));
+    adj[a].push_back(edge(b, w));
+    adj[b].push_back(edge(a, w));
   }
 
   void attach(int node_to_attach, int node_to_attach_to, int weight = 0) {
@@ -58,7 +58,7 @@ struct lca_lift {
     }
 
     tin[u] = time++;
-    for (edge e : edges[u]) {
+    for (edge e : adj[u]) {
       if (e.v != par) {
         depth[e.v] = depth[u] + 1;
         depthw[e.v] = depthw[u] + e.w;
@@ -110,3 +110,4 @@ struct lca_lift {
     return tin[v] >= tin[u] && tout[v] <= tout[u];
   }
 };
+
