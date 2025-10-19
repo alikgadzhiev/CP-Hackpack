@@ -4,7 +4,7 @@ class DisjointSparseTable {
   int n;
   vector<vector<T>> mat;
 
-  DisjointSparseTable(const vector<T>& a) : n(int(a.size())) {
+  DisjointSparseTable(const vector<T>& a) : n((int)(a.size())) {
     mat.push_back(a);
     for (int p = 1; (1 << p) < n; p++) {
       mat.emplace_back(n);
